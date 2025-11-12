@@ -1,0 +1,45 @@
+.hotel-reservation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    bg-color: #f7f7f7;
+}
+
+.hotel-reservation__title {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.hotel-reservation__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+}
+
+.hotel-reservation__input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.hotel-reservation__button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.hotel-reservation__button:hover {
+    background-color: #0056b3;
+}
+
+.hotel-reservation__footer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #666;
+}
