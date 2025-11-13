@@ -1,0 +1,45 @@
+name: deno-lint-autofix
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  autofix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: stable
+
+      - name: Run deno lint --fix
+        run: |
+          deno lint --unstable --fix || true
+
+      - name: Commit and push fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b lint-fixes || git checkout lint-fixes || true
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: deno lint --fix"
+          git push --set-upstream origin lint-fixes --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: deno lint --fix"
+          title: "chore: deno lint --fix"
+          body: "Apply deno lint --fix to resolve lint errors"
+          branch: lint-fixes
+          base: main
