@@ -33,6 +33,16 @@ function init() {
 function handleFormSubmit(event) {
     event.preventDefault();
     
+    // Check if in edit mode
+    const submitBtn = document.querySelector('#reservationForm button[type="submit"]');
+    if (submitBtn && submitBtn.dataset.mode === 'edit') {
+        // Let app.js handle the edit
+        if (typeof window.ReservationApp !== 'undefined' && window.ReservationApp.handleEditSubmit) {
+            window.ReservationApp.handleEditSubmit(event);
+        }
+        return;
+    }
+    
     // Clear previous error messages
     clearErrorMessages();
     

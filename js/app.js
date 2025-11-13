@@ -158,6 +158,7 @@ const ReservationApp = {
         const submitBtn = document.querySelector('#reservationForm button[type="submit"]');
         if (submitBtn) {
             submitBtn.textContent = 'Update Reservation';
+            submitBtn.dataset.mode = 'edit';
         }
 
         // Add cancel button if not exists
@@ -174,10 +175,6 @@ const ReservationApp = {
 
         // Scroll to form
         document.getElementById('reservationForm').scrollIntoView({ behavior: 'smooth' });
-
-        // Override form submission
-        const form = document.getElementById('reservationForm');
-        form.onsubmit = (e) => this.handleEditSubmit(e);
     },
 
     /**
@@ -199,18 +196,31 @@ const ReservationApp = {
         const validation = window.Validation.validateFormData(formData);
         
         if (!validation.isValid) {
-            alert('Please fix the errors in the form');
+            // Show error message
+            if (typeof showMessage === 'function') {
+                showMessage('Please fix the errors in the form', 'error');
+            } else {
+                alert('Please fix the errors in the form');
+            }
             return;
         }
 
         const updated = window.Storage.updateReservation(this.currentEditId, formData);
         
         if (updated) {
-            alert('Reservation updated successfully!');
+            if (typeof showMessage === 'function') {
+                showMessage('Reservation updated successfully!', 'success');
+            } else {
+                alert('Reservation updated successfully!');
+            }
             this.cancelEdit();
             this.displayReservations();
         } else {
-            alert('Error updating reservation. Please try again.');
+            if (typeof showMessage === 'function') {
+                showMessage('Error updating reservation. Please try again.', 'error');
+            } else {
+                alert('Error updating reservation. Please try again.');
+            }
         }
     },
 
@@ -224,16 +234,13 @@ const ReservationApp = {
         const submitBtn = document.querySelector('#reservationForm button[type="submit"]');
         if (submitBtn) {
             submitBtn.textContent = 'Create Reservation';
+            delete submitBtn.dataset.mode;
         }
 
         const cancelBtn = document.getElementById('cancelEdit');
         if (cancelBtn) {
             cancelBtn.remove();
         }
-
-        // Restore original form handler
-        const form = document.getElementById('reservationForm');
-        form.onsubmit = null;
     },
 
     /**
