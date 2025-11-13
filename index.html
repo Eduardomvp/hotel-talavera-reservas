@@ -1,1 +1,105 @@
-<!DOCTYPE html>\n<html lang="es">\n<head>\n    <meta charset="UTF-8">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n    <title>Reserva en Hotel Talavera</title>\n    <link rel="stylesheet" href="styles.css">\n</head>\n<body>\n    <header>\n        <h1>Hotel Talavera</h1>\n        <nav>\n            <ul>\n                <li><a href="#">Inicio</a></li>\n                <li><a href="#reservas">Reservas</a></li>\n                <li><a href="#contacto">Contacto</a></li>\n            </ul>\n        </nav>\n    </header>\n    <main>\n        <section id="reservas">\n            <h2>Hacer una Reserva</h2>\n            <form action="/reservar" method="POST">\n                <label for="nombre">Nombre:</label>\n                <input type="text" id="nombre" name="nombre" required>\n                <label for="fecha">Fecha:</label>\n                <input type="date" id="fecha" name="fecha" required>\n                <label for="habitaciones">Habitaciones:</label>\n                <input type="number" id="habitaciones" name="habitaciones" min="1" required>\n                <button type="submit">Reservar</button>\n            </form>\n        </section>\n        <section id="contacto">\n            <h2>Contacto</h2>\n            <p>Puedes contactarnos a través de nuestro correo: <a href="mailto:info@hoteltalavera.com">info@hoteltalavera.com</a></p>\n        </section>\n    </main>\n    <footer>\n        <p>&copy; 2025 Hotel Talavera. Todos los derechos reservados.</p>\n    </footer>\n</body>\n</html>\n
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva en Hotel Talavera</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Hotel Talavera</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#reservas">Reservas</a></li>
+                <li><a href="#mis-reservas">Mis Reservas</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="reservas">
+            <h2>Hacer una Reserva</h2>
+            <form id="reservationForm">
+                <div class="form-group">
+                    <label for="name">Nombre Completo *</label>
+                    <input type="text" id="name" name="name" required placeholder="Ingrese su nombre completo">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo Electrónico *</label>
+                    <input type="email" id="email" name="email" required placeholder="correo@ejemplo.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Teléfono *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+1234567890">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkIn">Fecha de Entrada *</label>
+                        <input type="date" id="checkIn" name="checkIn" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkOut">Fecha de Salida *</label>
+                        <input type="date" id="checkOut" name="checkOut" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomType">Tipo de Habitación *</label>
+                        <select id="roomType" name="roomType" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="single">Habitación Individual</option>
+                            <option value="double">Habitación Doble</option>
+                            <option value="suite">Suite</option>
+                            <option value="deluxe">Suite Deluxe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guests">Número de Huéspedes *</label>
+                        <input type="number" id="guests" name="guests" min="1" max="10" required placeholder="1">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Reservation</button>
+            </form>
+        </section>
+
+        <section id="mis-reservas">
+            <h2>Mis Reservas</h2>
+            <div class="reservations-controls">
+                <input type="text" id="searchReservations" placeholder="Buscar reservas..." class="search-input">
+                <button id="clearAllReservations" class="btn btn-danger">Eliminar Todas</button>
+            </div>
+            <div id="reservationsList" class="reservations-list">
+                <!-- Reservations will be displayed here -->
+            </div>
+        </section>
+
+        <section id="contacto">
+            <h2>Contacto</h2>
+            <p>Puedes contactarnos a través de nuestro correo: <a href="mailto:info@hoteltalavera.com">info@hoteltalavera.com</a></p>
+            <p>Teléfono: +34 123 456 789</p>
+            <p>Dirección: Calle Principal 123, Talavera, España</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Hotel Talavera. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Load JavaScript modules -->
+    <script src="js/utils/validation.js"></script>
+    <script src="js/utils/storage.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
