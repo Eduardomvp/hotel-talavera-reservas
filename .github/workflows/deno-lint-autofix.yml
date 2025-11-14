@@ -1,36 +1,50 @@
-name: Deno Lint Autofix
+name: deno-lint-autofix
 
 on:
-  workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write
+  workflow_dispatch: {}
 
 jobs:
-  lint-autofix:
+  autofix:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: stable
-      
+
       - name: Run deno lint --fix
-        run: deno lint --fix
-      
+        run: |
+          deno lint --fix || true
+
+      - name: Commit and push fixes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin
+          if git rev-parse --verify --quiet origin/lint-fixes >/dev/null; then
+            git checkout -B lint-fixes origin/lint-fixes
+          else
+            git checkout -B lint-fixes
+          fi
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "chore: deno lint --fix"
+          git push --set-upstream origin lint-fixes --force
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'chore: deno lint --fix'
-          committer: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
-          author: 'github-actions[bot] <github-actions[bot]@users.noreply.github.com>'
+          commit-message: "chore: deno lint --fix"
+          title: "chore: deno lint --fix"
+          body: "Apply deno lint --fix to resolve lint errors"
           branch: lint-fixes
-          delete-branch: false
-          title: 'chore: deno lint --fix'
-          body: 'Apply deno lint --fix to resolve lint errors'
+          base: main
